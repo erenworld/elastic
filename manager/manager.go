@@ -17,3 +17,14 @@ type Manager struct {
 	TaskWorkerMap 	map[uuid.UUID]string
 }
 
+func (m *Manager) SelectWorker() {
+	fmt.Println("Select appropriate worker")
+}
+
+func (m *Manager) UpdateTasks() {
+	fmt.Println("Update tasks")
+}
+
+func (m *Manager) SendWorker() {
+	fmt.Println("Select appropriate worker")
+}
