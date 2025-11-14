@@ -9,12 +9,12 @@ import (
 )
 
 type Manager struct {
-	Pending			queue.Queue
-	TaskDb  		map[string][]*task.Task
-	EventDb 		map[string][]*task.TaskEvent
-	Workers			[]string
-	WorkerTaskMap 	map[string][]uuid.UUID
-	TaskWorkerMap 	map[uuid.UUID]string
+	Pending			queue.Queue						// Tasks in FIFO order
+	TaskDb  		map[string][]*task.Task			// In-memory db to store task
+	EventDb 		map[string][]*task.TaskEvent    // In-memory db to store taskEvent
+	Workers			[]string						// Keep track of the workers in cluster
+	WorkerTaskMap 	map[string][]uuid.UUID			// Task by UUID
+	TaskWorkerMap 	map[uuid.UUID]string			// Task by name
 }
 
 func (m *Manager) SelectWorker() {
