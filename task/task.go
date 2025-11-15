@@ -3,8 +3,8 @@ package task
 import (
 	"time"
 
-	"github.com/google/uuid"
 	"github.com/docker/go-connections/nat"
+	"github.com/google/uuid"
 ) 
 
 type State int
@@ -56,3 +56,15 @@ type Config struct {
 	RestartPolicy string
 }
 
+// Encapsulation to run our task as docker container.
+type Docker struct {
+	Client *client.Client
+	Config Config
+}
+
+type DockerResult struct {
+	ContainerId	string
+	Error 		error
+	Action 		string
+	Result 		string
+}
