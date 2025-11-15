@@ -35,5 +35,5 @@ func (w *Worker) StopTask() {
 }
 
 func (w *Worker) CollectsStats() {
-	fmt.Println("Stats")
+	fmt.Println("Collect stats")
 }

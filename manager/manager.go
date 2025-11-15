@@ -26,5 +26,5 @@ func (m *Manager) UpdateTasks() {
 }
 
 func (m *Manager) SendWorker() {
-	fmt.Println("Select appropriate worker")
+	fmt.Println("Send work to worker")
 }

@@ -17,8 +17,7 @@ const (
 	Failed
 )
 
-// A Task that a user wants to run on our cluster.
-// A Task can be in several states: pending, scheduled, running, completed, failed
+// A Task that a user wants to run on our cluster (pending, scheduled, running, completed, failed).
 type Task struct {
 	ID			  uuid.UUID
 	ContainerId	  string
