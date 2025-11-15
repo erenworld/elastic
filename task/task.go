@@ -1,8 +1,14 @@
 package task
 
 import (
+	"context"
+	"io"
+	"log"
+	"os"
 	"time"
 
+	"github.com/docker/docker/api/types/image"
+	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 	"github.com/google/uuid"
 ) 
@@ -67,4 +73,16 @@ type DockerResult struct {
 	Error 		error
 	Action 		string
 	Result 		string
+}
+
+func (d *Docker) Run() DockerResult {
+	ctx := context.Background()
+	reader, err := d.Client.ImagePull(ctx, d.Config.Image, image.PullOptions{})
+	if err != nil {
+		log.Printf("Error pulling image %s: %v\n", d.Config.Image, err)
+		return DockerResult{Error: err}
+	}
+	// Copy the stream of logs from Docker to the terminal
+	io.Copy(os.Stdout, reader) 
+	return DockerResult{}
 }
