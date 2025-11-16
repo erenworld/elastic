@@ -6,6 +6,7 @@ import (
 	"orkestra/node"
 	"orkestra/task"
 	"orkestra/worker"
+	"os"
 	"time"
 
 	"github.com/docker/docker/client"
@@ -23,7 +24,11 @@ func createContainer() (*task.Docker, *task.DockerResult) {
 		},
 	}
 
-	dc, _ := client.NewClientWithOpts(client.FromEnv)
+	dc, err := client.NewClientWithOpts(client.FromEnv, client.WithAPIVersionNegotiation())
+	if err != nil {
+		fmt.Printf("Error creating Docker client: %v\n", err)
+		return nil, &task.DockerResult{Error: err}
+	}
 	d := task.Docker{
 		Client: dc,
 		Config: c,
@@ -32,7 +37,7 @@ func createContainer() (*task.Docker, *task.DockerResult) {
 	result := d.Run()
 	if result.Error != nil {
 		fmt.Printf("%v\n", result.Error)
-		return nil, nil
+		return nil, &result
 	}
 
 	fmt.Printf("Container %s is running with config %v\n", result.ContainerId, c)
@@ -103,4 +108,17 @@ func main() {
 	}
 
 	fmt.Printf("\nnode: %v\n", n)
+
+	// docker api
+	fmt.Printf("Creating a container...\n")
+	dockerTask, createResult := createContainer()
+	if createResult.Error != nil {
+		fmt.Printf("%v", createResult.Error)
+		os.Exit(1)
+	}
+	
+
+	time.Sleep(time.Second * 5)
+	fmt.Printf("Stopping container %s\n", createResult.ContainerId)
+	_ = stopContainer(dockerTask, createResult.ContainerId)
 }
