@@ -39,6 +39,17 @@ func createContainer() (*task.Docker, *task.DockerResult) {
 	return &d, &result
 }
 
+func stopContainer(d *task.Docker, id string) *task.DockerResult {
+	result := d.Stop(id)
+	if result.Error != nil {
+		fmt.Printf("%v\n", result.Error)
+		return nil
+	}
+
+	fmt.Printf("Container %s has been stopped and removed\n", result.ContainerId)
+	return &result
+}
+
 func main() {
 	t := task.Task{
 		ID:		uuid.New(),
