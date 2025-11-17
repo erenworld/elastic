@@ -19,11 +19,11 @@ import (
 type State int
 
 const (
-	Pending State = iota
-	Scheduled
-	Running
-	Completed
-	Failed
+	Pending State = iota 	// The starting point for every task.
+	Scheduled				// Once the manager has scheduled it onto a worker.
+	Running					// Task moves here when a worker successfully starts the task.
+	Completed				// When it completes its work in a normal way.
+	Failed					// When a task fails.
 )
 
 // A Task that a user wants to run on our cluster (pending, scheduled, running, completed, failed).
