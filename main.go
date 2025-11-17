@@ -84,7 +84,7 @@ func main() {
 	w.CollectsStats()
 	w.RunTask()
 	w.StartTask()
-	w.StopTask()
+	// w.StopTask()
 
 	m := manager.Manager{
 		Pending: *queue.New(),

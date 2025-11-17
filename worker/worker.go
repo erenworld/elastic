@@ -2,7 +2,9 @@ package worker
 
 import (
 	"fmt"
+	"log"
 	"orkestra/task"
+	"time"
 
 	"github.com/golang-collections/collections/queue"
 	"github.com/google/uuid"
@@ -24,16 +26,29 @@ type Worker struct {
 	TaskCount 	int
 }
 
+func (w *Worker) StopTask(t task.Task) task.DockerResult {
+	config := task.NewConfig(&t)
+	d := task.NewDocker(config)
+
+	result := d.Stop(t.ContainerId)
+	if result.Error != nil {
+		log.Printf("Error stopping container %v, %v\n", t.ContainerId, result.Error)
+	}
+
+	t.FinishTime = time.Now().UTC()
+	t.State = task.Completed
+	w.Db[t.ID] = &t
+	log.Printf("Stop and removed container %v for task %v\n", t.ContainerId, t.ID)
+
+	return result
+}
+
 func (w *Worker) RunTask() {
 	fmt.Println("Run task")
 }
 
 func (w *Worker) StartTask() {
 	fmt.Println("Start task")
-}
-
-func (w *Worker) StopTask() {
-	fmt.Println("Stop task")
 }
 
 func (w *Worker) CollectsStats() {
