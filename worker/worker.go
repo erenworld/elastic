@@ -13,8 +13,10 @@ import (
 // Provide relevant statistics to the manager for the purpose of scheduling tasks.
 // Keep track of its tasks and their state.
 
-// TODOS: implement my own queue in Golang
-// TODOS: implement my own DB
+// The worker maintains the state of its tasks by storing them in a database.
+// api -> task queue -> metrics -> runtime (docker start and stop) -> maintain state of its task by storing them in a db
+
+
 type Worker struct {
 	Name 		string
 	Queue   	queue.Queue					// a map of UUIDs to tasks
